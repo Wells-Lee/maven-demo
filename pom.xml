@@ -29,44 +29,23 @@
 
     <build>
         <plugins>
+            <!-- maven-shade-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
-                <!-- 对要打的jar包进行配置 -->
-                <configuration>
-                    <!-- Configuration of the archiver -->
-                    <archive>
-                        <!--生成的jar中，不要包含pom.xml和pom.properties这两个文件-->
-                        <addMavenDescriptor>false</addMavenDescriptor>
-
-                        <!-- Manifest specific configuration -->
-                        <manifest>
-                            <!--是否要把第三方jar放到manifest的classpath中-->
-                            <addClasspath>true</addClasspath>
-                            <!--生成的manifest中classpath的前缀， 因为要把第三方jar放到lib目录下，所以classpath的前缀是lib/-->
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <!-- 主类 -->
-                            <mainClass>com.wells.maven.demo.execute.TestMaven</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.2</version>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.2</version>
                 <executions>
                     <execution>
-                        <id>copy</id>
-                        <phase>compile</phase>
+                        <phase>package</phase>
                         <goals>
-                            <goal>copy-dependencies</goal>
+                            <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>
-                                ${project.build.directory}/lib
-                            </outputDirectory>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.wells.maven.demo.execute.TestMaven</mainClass>
+                                </transformer>
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>
