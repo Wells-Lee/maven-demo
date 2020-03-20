@@ -16,6 +16,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spark.version>2.2.3</spark.version>
+        <project.script.execute.directory>scripts</project.script.execute.directory>
     </properties>
 
     <dependencies>
@@ -29,24 +30,37 @@
 
     <build>
         <plugins>
-            <!-- maven-shade-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.2</version>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.2.0</version>
+                <!-- 对项目的组装进行配置 -->
+                <configuration>
+                    <!-- 指定assembly插件的配置文件所在位置 -->
+                    <descriptors>
+                        <descriptor>src/main/resources/assembly/package.xml</descriptor>
+                    </descriptors>
+
+                    <!-- get all project dependencies -->
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <!-- MainClass in mainfest make a executable jar, 也可以不用指定 -->
+<!--                    <archive>-->
+<!--                        <manifest>-->
+<!--                            <mainClass>com.wells.maven.demo.execute.TestMaven</mainClass>-->
+<!--                        </manifest>-->
+<!--                    </archive>-->
+                </configuration>
                 <executions>
                     <execution>
+                        <id>make-assembly</id>
+                        <!-- 将组装绑定到maven生命周期的哪一阶段 -->
                         <phase>package</phase>
                         <goals>
-                            <goal>shade</goal>
+                            <!-- 指定assembly插件的打包方式-->
+                            <goal>single</goal>
                         </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.wells.maven.demo.execute.TestMaven</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
