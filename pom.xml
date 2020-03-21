@@ -36,12 +36,12 @@
                 <version>3.2.0</version>
                 <!-- 对项目的组装进行配置 -->
                 <configuration>
-                    <!-- 指定assembly插件的配置文件所在位置 -->
+                    <!-- 指定assembly插件的配置文件所在位置, 通过这个描述打出来的jar包是瘦包 -->
                     <descriptors>
                         <descriptor>src/main/resources/assembly/package.xml</descriptor>
                     </descriptors>
 
-                    <!-- get all project dependencies -->
+                    <!-- get all project dependencies, 通过这个描述打出来的jar包是胖包 -->
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
